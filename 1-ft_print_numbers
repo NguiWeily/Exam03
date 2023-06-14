@@ -1,0 +1,40 @@
+Assignment name  : ft_print_numbers
+Expected files   : ft_print_numbers.c
+Allowed functions: write
+--------------------------------------------------------------------------------
+
+Write a function that displays all digits in ascending order.
+
+Your function must be declared as follows:
+
+void	ft_print_numbers(void);
+
+Certainly! Here's an implementation of the `ft_print_numbers` function in C:
+
+```c
+#include <unistd.h>
+
+void ft_print_numbers(void) {
+    char digit = '0';
+    while (digit <= '9') {
+        write(1, &digit, 1);
+        digit++;
+    }
+}
+```
+
+Save the above code in a file named `ft_print_numbers.c`. The `ft_print_numbers` function displays all digits from 0 to 9 in ascending order.
+
+Here's an example usage of the `ft_print_numbers` function:
+
+```c
+#include <stdio.h>
+
+int main() {
+    ft_print_numbers();
+    printf("\n");
+    return 0;
+}
+```
+
+You can compile the code using a C compiler, and the output will be all the digits from 0 to 9 printed on the console.
