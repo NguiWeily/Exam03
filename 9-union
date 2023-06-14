@@ -1,0 +1,63 @@
+Assignment name  : union
+Expected files   : union.c
+Allowed functions: write
+--------------------------------------------------------------------------------
+
+Write a program that takes two strings and displays, without doubles, the
+characters that appear in either one of the strings.
+
+The display will be in the order characters appear in the command line, and
+will be followed by a \n.
+
+If the number of arguments is not 2, the program displays \n.
+
+Example:
+
+$>./union zpadinton "paqefwtdjetyiytjneytjoeyjnejeyj" | cat -e
+zpadintoqefwjy$
+$>./union ddf6vewg64f gtwthgdwthdwfteewhrtag6h4ffdhsd | cat -e
+df6vewg4thras$
+$>./union "rien" "cette phrase ne cache rien" | cat -e
+rienct phas$
+$>./union | cat -e
+$
+$>
+$>./union "rien" | cat -e
+$
+$>
+
+Certainly! Here's an implementation of the `ft_atoi` function in C:
+
+```c
+int ft_atoi(const char *str) {
+    int result = 0;
+    int sign = 1;
+    int i = 0;
+
+    // Skip leading whitespace
+    while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' ||
+           str[i] == '\v' || str[i] == '\f' || str[i] == '\r') {
+        i++;
+    }
+
+    // Check for sign
+    if (str[i] == '-' || str[i] == '+') {
+        sign = (str[i] == '-') ? -1 : 1;
+        i++;
+    }
+
+    // Convert digits to integer
+    while (str[i] >= '0' && str[i] <= '9') {
+        result = result * 10 + (str[i] - '0');
+        i++;
+    }
+
+    return result * sign;
+}
+```
+
+The `ft_atoi` function converts the string `str` to an integer and returns the result. It mimics the behavior of the standard `atoi` function.
+
+The function skips any leading whitespace characters and checks for an optional sign character (`+` or `-`). It then iterates through the string, converting consecutive digits to an integer value by accumulating them in the `result` variable.
+
+Make sure to include the necessary header files and declare the function prototype before using the `ft_atoi` function in your code.
