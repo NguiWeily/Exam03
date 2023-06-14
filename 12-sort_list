@@ -1,0 +1,83 @@
+Assignment name  : sort_list
+Expected files   : sort_list.c
+Allowed functions: 
+--------------------------------------------------------------------------------
+
+Write the following functions:
+
+t_list	*sort_list(t_list* lst, int (*cmp)(int, int));
+
+This function must sort the list given as a parameter, using the function 
+pointer cmp to select the order to apply, and returns a pointer to the 
+first element of the sorted list.
+
+Duplications must remain.
+
+Inputs will always be consistent.
+
+You must use the type t_list described in the file list.h 
+that is provided to you. You must include that file 
+(#include "list.h"), but you must not turn it in. We will use our own 
+to compile your assignment.
+
+Functions passed as cmp will always return a value different from 
+0 if a and b are in the right order, 0 otherwise.
+
+For example, the following function used as cmp will sort the list 
+in ascending order:
+
+int ascending(int a, int b)
+{
+	return (a <= b);
+}
+
+Here's an example implementation of the `sort_list` function:
+
+```c
+#include "list.h"
+
+t_list	*sort_list(t_list *lst, int (*cmp)(int, int))
+{
+	t_list	*current;
+	t_list	*next;
+	int		temp;
+
+	if (lst == NULL || lst->next == NULL)
+		return lst;
+
+	current = lst;
+	while (current != NULL)
+	{
+		next = current->next;
+		while (next != NULL)
+		{
+			if ((*cmp)(current->data, next->data) == 0)
+			{
+				temp = current->data;
+				current->data = next->data;
+				next->data = temp;
+			}
+			next = next->next;
+		}
+		current = current->next;
+	}
+
+	return lst;
+}
+```
+
+The `sort_list` function takes a linked list `lst` and a comparison function `cmp` as parameters. It sorts the list in-place based on the order defined by the comparison function and returns a pointer to the first element of the sorted list.
+
+The sorting algorithm used in this implementation is Bubble Sort. It repeatedly iterates through the list, comparing adjacent elements and swapping them if they are in the wrong order. This process is repeated until the list is sorted.
+
+The function starts by handling the base cases: if the list is empty or has only one element, it is already sorted, so it returns the list as is.
+
+Then, it uses two pointers, `current` and `next`, to iterate through the list. The outer loop moves `current` from the first element to the second-to-last element, while the inner loop moves `next` from the element following `current` to the last element.
+
+Inside the inner loop, the comparison function `cmp` is used to compare the data of the current node (`current->data`) with the data of the next node (`next->data`). If the comparison function returns 0, indicating that the current and next elements are in the wrong order, their data values are swapped.
+
+After the inner loop completes for a particular `current` node, it moves `current` to the next node and continues the process. This continues until the outer loop reaches the last node in the list.
+
+Finally, the function returns the sorted list.
+
+Make sure to include the appropriate header file (`list.h` in this case) in your implementation and use the correct structure definition (`t_list`).
