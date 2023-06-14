@@ -1,0 +1,111 @@
+Assignment name  : str_maxlenoc
+Expected files   : str_maxlenoc.c
+Allowed functions: write, malloc, free
+--------------------------------------------------------------------------------
+
+Écrire un programme qui prend en paramètres n chaînes de caractères et qui
+affiche, suivie d'un retour à la ligne, la plus grande chaîne de caractères
+incluse dans toutes les chaînes passées en paramètres. Si plusieurs chaînes
+correspondent, on affichera celle qui apparaît en premier dans le premier
+paramètre. A noter que "" est forcément dans toutes les chaînes.
+
+Si aucun paramètre n'est transmis, le programme doit afficher
+'\n'.
+
+Soit A et B des chaînes de caracteres. On dit que A
+est inclus dans B si A est une sous-chaîne de B ou
+si A et B sont identiques.
+
+Exemples :
+$>./str_maxlenoc ab bac abacabccabcb
+a
+$>./str_maxlenoc bonjour salut bonjour bonjour
+u
+$>./str_maxlenoc xoxAoxo xoxAox  oxAox oxo  A ooxAoxx oxooxo Axo | cat -e
+$
+$>./str_maxlenoc bosdsdfnjodur atehhellosd afkuonjosurafg headfgllosf fghellosag afdfbosnjourafg
+os
+$>./str_maxlenoc | cat -e
+$
+
+Voici une possible implémentation du programme `str_maxlenoc` en langage C :
+
+```c
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+int     is_substring(char *substring, char *string)
+{
+    return strstr(string, substring) != NULL;
+}
+
+char    *get_max_common_substring(char **strings, int num_strings)
+{
+    int i, j;
+    int len = strlen(strings[0]);
+    char *max_substring = NULL;
+    int max_length = 0;
+
+    for (i = 0; i < len; i++)
+    {
+        for (j = i + 1; j <= len; j++)
+        {
+            char *substring = strndup(strings[0] + i, j - i);
+            int k;
+            for (k = 1; k < num_strings; k++)
+            {
+                if (!is_substring(substring, strings[k]))
+                    break;
+            }
+            if (k == num_strings && (j - i) > max_length)
+            {
+                max_length = j - i;
+                free(max_substring);
+                max_substring = substring;
+            }
+            else
+            {
+                free(substring);
+            }
+        }
+    }
+
+    return max_substring;
+}
+
+void    str_maxlenoc(int num_strings, char **strings)
+{
+    if (num_strings == 0)
+    {
+        write(1, "\n", 1);
+        return;
+    }
+
+    char *max_substring = get_max_common_substring(strings, num_strings);
+    if (max_substring)
+    {
+        write(1, max_substring, strlen(max_substring));
+        free(max_substring);
+    }
+    write(1, "\n", 1);
+}
+
+int     main(int argc, char **argv)
+{
+    if (argc > 1)
+        str_maxlenoc(argc - 1, argv + 1);
+    else
+        write(1, "\n", 1);
+    return 0;
+}
+```
+
+Le programme `str_maxlenoc` prend en paramètres une série de chaînes de caractères et recherche la plus grande sous-chaîne commune à toutes ces chaînes. Il affiche ensuite cette sous-chaîne, suivie d'un retour à la ligne.
+
+Le programme utilise la fonction `is_substring` pour vérifier si une chaîne donnée est une sous-chaîne d'une autre chaîne. Ensuite, il parcourt toutes les combinaisons possibles de sous-chaînes de la première chaîne fournie en paramètre. Pour chaque sous-chaîne, il vérifie si elle est présente dans toutes les autres chaînes. Si c'est le cas et que sa longueur est supérieure à la plus grande sous-chaîne trouvée jusqu'à présent, il la met à jour.
+
+Enfin, le programme affiche la plus grande sous-chaîne trouvée, ou un newline s'il n'y en a pas.
+
+Assurez-vous d'inclure les en-têtes appropriés (`<unistd.h>`, `<stdlib.h>`, `<stdio.h>`, `<string.h>`) et de compiler le programme avec un compilateur C.
