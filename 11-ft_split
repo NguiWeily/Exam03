@@ -107,4 +107,4 @@ Finally, the `ft_split` function uses the `count_words` function to determine th
 
 If any memory allocation fails during the process, the function frees the memory allocated so far and returns `NULL`.
 
-Remember
+Remember to include the necessary header file (<stdlib.h>) and free the allocated memory when you are done using the array of strings to avoid memory leaks.
