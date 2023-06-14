@@ -1,0 +1,110 @@
+Assignment name  : ft_split
+Expected files   : ft_split.c
+Allowed functions: malloc
+--------------------------------------------------------------------------------
+
+Write a function that takes a string, splits it into words, and returns them as
+a NULL-terminated array of strings.
+
+A "word" is defined as a part of a string delimited either by spaces/tabs/new
+lines, or by the start/end of the string.
+
+Your function must be declared as follows:
+
+char    **ft_split(char *str);
+
+Here's an implementation of the `ft_split` function in C:
+
+```c
+#include <stdlib.h>
+
+int is_delimiter(char c) {
+    return c == ' ' || c == '\t' || c == '\n';
+}
+
+int count_words(char *str) {
+    int count = 0;
+    int is_word = 0;
+
+    while (*str) {
+        if (is_delimiter(*str)) {
+            is_word = 0;
+        } else if (!is_word) {
+            is_word = 1;
+            count++;
+        }
+        str++;
+    }
+
+    return count;
+}
+
+char *get_word(char *str) {
+    int length = 0;
+
+    while (*str && !is_delimiter(*str)) {
+        length++;
+        str++;
+    }
+
+    char *word = (char *)malloc((length + 1) * sizeof(char));
+    if (word == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < length; i++) {
+        word[i] = *(str - length + i);
+    }
+    word[length] = '\0';
+
+    return word;
+}
+
+char **ft_split(char *str) {
+    int word_count = count_words(str);
+    char **split = (char **)malloc((word_count + 1) * sizeof(char *));
+    if (split == NULL) {
+        return NULL;
+    }
+
+    int word_index = 0;
+    int is_word = 0;
+
+    while (*str) {
+        if (is_delimiter(*str)) {
+            is_word = 0;
+        } else if (!is_word) {
+            is_word = 1;
+            split[word_index] = get_word(str);
+            if (split[word_index] == NULL) {
+                // Free the memory allocated so far
+                for (int i = 0; i < word_index; i++) {
+                    free(split[i]);
+                }
+                free(split);
+                return NULL;
+            }
+            word_index++;
+        }
+        str++;
+    }
+
+    split[word_count] = NULL;
+
+    return split;
+}
+```
+
+The `ft_split` function takes a string `str` as input and splits it into words. It returns a dynamically allocated array of strings, where each string represents a word in the original string. The array of strings is terminated by a `NULL` pointer.
+
+The function starts by defining a helper function `is_delimiter` to check if a character is a delimiter (space, tab, or newline). This function returns 1 if the character is a delimiter, and 0 otherwise.
+
+The function `count_words` counts the number of words in the input string. It iterates through the string and increments the count whenever it encounters the start of a new word (i.e., a non-delimiter character preceded by a delimiter).
+
+The function `get_word` extracts a word from the input string. It takes a pointer to the start of a word and iterates until it reaches the end of the word or the end of the string. It dynamically allocates memory for the word, copies the characters of the word into the allocated memory, and adds a null terminator at the end.
+
+Finally, the `ft_split` function uses the `count_words` function to determine the number of words in the string. It allocates memory for an array of strings, with a size equal to the number of words plus one (for the terminating `NULL` pointer). It then iterates through the string, identifies the start of each word, and uses the `get_word` function to extract each word and store it in the array.
+
+If any memory allocation fails during the process, the function frees the memory allocated so far and returns `NULL`.
+
+Remember
