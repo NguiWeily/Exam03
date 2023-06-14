@@ -1,0 +1,55 @@
+Assignment name  : rev_print
+Expected files   : rev_print.c
+Allowed functions: write
+--------------------------------------------------------------------------------
+
+Write a function that takes a string and displays the string in reverse
+order followed by the newline.
+Its prototype is constructed like this : 
+  char *ft_rev_print (char *str)
+It must return its argument
+
+Examples:
+
+$> ./rev_print "zaz" | cat -e
+zaz$
+$> ./rev_print "dub0 a POIL" | cat -e
+LIOP a 0bud$
+$> ./rev_print | cat -e
+$
+
+Certainly! Here's an implementation of the `ft_rev_print` function in C:
+
+```c
+#include <unistd.h>
+
+char* ft_rev_print(char* str) {
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+
+    for (int i = length - 1; i >= 0; i--) {
+        write(1, &str[i], 1);
+    }
+
+    return str;
+}
+```
+
+Save the above code in a file named `rev_print.c`. The `ft_rev_print` function takes a string `str`, prints the string in reverse order, and returns the input string.
+
+Here's an example usage of the `ft_rev_print` function:
+
+```c
+#include <stdio.h>
+
+int main() {
+    char str[] = "Hello, world!";
+    ft_rev_print(str);
+    printf("\n");
+    return 0;
+}
+```
+
+You can compile the code using a C compiler, and the output will be the reversed string followed by a newline. In the example usage above, the output would be "!dlrow ,olleH".
