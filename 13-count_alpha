@@ -1,0 +1,80 @@
+Assignment name  : count_alpha
+Expected files   : count_alpha.c
+Allowed functions: write, printf
+--------------------------------------------------------------------------------
+
+Écrire un programme count_alpha qui prend une chaîne et affiche le nombre d'occurences
+de ses caractères alphabétiques. Les autres caractères ne sont pas comptés. L'ordre est l'ordre d'apparition dans la chaîne.
+L'affichage doit être terminé par un newline.
+
+Le format est dans les exemples.
+
+Si le nombre d'arguments n'est pas 1, afficher juste un newline.
+
+Exemples :
+$> ./count_alpha abbcc
+1a, 2b, 2c
+$> ./count_alpha "abbcc"
+1a, 2b, 2c
+$> ./count_alpha "abbcc" "dddeef" | cat -e
+$
+$> ./count_alpha "My Hyze 47y 7." | cat -e
+1m, 3y, 1h, 1z, 1e$
+$> ./count_alpha "" | cat -e
+$
+
+Voici une possible implémentation du programme `count_alpha` en langage C :
+
+```c
+#include <unistd.h>
+
+void    count_alpha(char *str)
+{
+    int count[26] = {0};
+    int i;
+
+    if (str)
+    {
+        for (i = 0; str[i] != '\0'; i++)
+        {
+            if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+            {
+                if (str[i] >= 'a' && str[i] <= 'z')
+                    count[str[i] - 'a']++;
+                else if (str[i] >= 'A' && str[i] <= 'Z')
+                    count[str[i] - 'A']++;
+            }
+        }
+        for (i = 0; i < 26; i++)
+        {
+            if (count[i] > 0)
+            {
+                if (i == 0)
+                    write(1, "1a", 2);
+                else
+                    printf(", %d%c", count[i], 'a' + i);
+            }
+        }
+    }
+    write(1, "\n", 1);
+}
+
+int     main(int argc, char **argv)
+{
+    if (argc == 2)
+        count_alpha(argv[1]);
+    else
+        write(1, "\n", 1);
+    return 0;
+}
+```
+
+Le programme `count_alpha` prend une chaîne de caractères en argument et compte le nombre d'occurrences de chaque caractère alphabétique. Les caractères non alphabétiques sont ignorés.
+
+Le programme utilise un tableau `count` de taille 26 pour stocker le nombre d'occurrences de chaque caractère. Il parcourt la chaîne caractère par caractère et, s'il s'agit d'un caractère alphabétique (minuscule ou majuscule), il incrémente le compteur correspondant dans le tableau `count`.
+
+Ensuite, le programme parcourt le tableau `count` et affiche le nombre d'occurrences de chaque caractère alphabétique. La sortie est au format spécifié dans l'énoncé, avec les nombres suivis des caractères correspondants. Par exemple, "1a, 2b, 2c".
+
+Si aucun argument n'est fourni à la ligne de commande, le programme affiche simplement un newline.
+
+Assurez-vous d'inclure les en-têtes appropriés (`<unistd.h>` et `<stdio.h>`) et de compiler le programme avec un compilateur C.
