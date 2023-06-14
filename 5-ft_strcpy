@@ -1,0 +1,29 @@
+Assignment name  : ft_strcpy
+Expected files   : ft_strcpy.c
+Allowed functions: 
+--------------------------------------------------------------------------------
+
+Reproduce the behavior of the function strcpy (man strcpy).
+
+Your function must be declared as follows:
+
+char    *ft_strcpy(char *s1, char *s2);
+
+Here's an implementation of the `ft_strcpy` function in C:
+
+```c
+char *ft_strcpy(char *s1, const char *s2) {
+    char *dest = s1;
+    while (*s2) {
+        *s1 = *s2;
+        s1++;
+        s2++;
+    }
+    *s1 = '\0';
+    return dest;
+}
+```
+
+The `ft_strcpy` function copies the string `s2` to `s1` (including the null terminator), and returns `s1`. It behaves similar to the standard `strcpy` function.
+
+Note that in the parameter declaration, I have changed `char *s2` to `const char *s2` to indicate that `s2` is a constant string and should not be modified.
