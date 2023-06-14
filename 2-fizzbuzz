@@ -1,0 +1,85 @@
+Assignment name  : fizzbuzz
+Expected files   : fizzbuzz.c
+Allowed functions: write
+--------------------------------------------------------------------------------
+
+Ecrire un programme qui écrit une suite de nombres de 1 à 100 sur la sortie 
+standard, tous séparés par une newline. 
+
+Si le nombre est un multiple de 3, le programme doit écrire 'fizz' à la place.
+
+Si le nombre est un multiple de 5, le programme doit écrire 'buzz' à la place.
+
+Si le nombre est un multiple de 3 et un multiple de 5, le programme doit écrire 
+'fizzbuzz' à la place.
+
+Exemple:
+
+$>./fizzbuzz
+1
+2
+fizz
+4
+buzz
+fizz
+7
+8
+fizz
+buzz
+11
+fizz
+13
+14
+fizzbuzz
+[...]
+97
+98
+fizz
+buzz
+$> 
+
+Voici une implémentation du programme `fizzbuzz` en C :
+
+```c
+#include <unistd.h>
+
+void ft_putnbr(int n) {
+    if (n >= 10) {
+        ft_putnbr(n / 10);
+        ft_putnbr(n % 10);
+    } else {
+        char digit = n + '0';
+        write(1, &digit, 1);
+    }
+}
+
+void fizzbuzz() {
+    for (int i = 1; i <= 100; i++) {
+        if (i % 3 == 0 && i % 5 == 0) {
+            write(1, "fizzbuzz\n", 9);
+        } else if (i % 3 == 0) {
+            write(1, "fizz\n", 5);
+        } else if (i % 5 == 0) {
+            write(1, "buzz\n", 5);
+        } else {
+            ft_putnbr(i);
+            write(1, "\n", 1);
+        }
+    }
+}
+```
+
+Sauvegardez le code ci-dessus dans un fichier nommé `fizzbuzz.c`. La fonction `fizzbuzz` écrit une séquence de nombres de 1 à 100 sur la sortie standard, en remplaçant les multiples de 3 par "fizz", les multiples de 5 par "buzz", et les multiples de 3 et 5 par "fizzbuzz".
+
+Voici un exemple d'utilisation du programme `fizzbuzz` :
+
+```c
+#include <stdio.h>
+
+int main() {
+    fizzbuzz();
+    return 0;
+}
+```
+
+Vous pouvez compiler le code à l'aide d'un compilateur C, et l'exécution du programme affichera la séquence de nombres de 1 à 100, en respectant les règles du jeu fizzbuzz.
